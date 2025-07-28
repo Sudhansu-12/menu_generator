@@ -148,9 +148,10 @@ const ComboDisplay: React.FC<ComboDisplayProps> = ({ dayOutput, loading }) => {
           </div>
         </div>
       </div>
-    </div>
+
       {/* JSON Output Section */}
       <JsonOutput dayOutput={dayOutput} />
+    </div>
 
   );
 };
