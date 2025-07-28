@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Clock, Star, Zap } from 'lucide-react';
 import { DayOutput } from '../types';
+import JsonOutput from './JsonOutput';
 
 interface ComboDisplayProps {
   dayOutput: DayOutput | null;
@@ -148,6 +149,9 @@ const ComboDisplay: React.FC<ComboDisplayProps> = ({ dayOutput, loading }) => {
         </div>
       </div>
     </div>
+      {/* JSON Output Section */}
+      <JsonOutput dayOutput={dayOutput} />
+
   );
 };
 
