@@ -45,9 +45,9 @@ const JsonOutput: React.FC<JsonOutputProps> = ({ dayOutput }) => {
     }
 
     // Popularity reasoning
-    if (combo.popularity_score > 250) {
+    if (combo.popularity_score > 240) {
       reasons.push('highly popular choices');
-    } else if (combo.popularity_score > 200) {
+    } else if (combo.popularity_score > 210) {
       reasons.push('popular choices');
     } else {
       reasons.push('balanced popularity');

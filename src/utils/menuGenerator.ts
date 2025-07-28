@@ -1,66 +1,44 @@
 import { MenuItem } from '../types';
-
-const MAIN_NAMES = [
-  'Grilled Chicken', 'Beef Steak', 'Salmon Fillet', 'Vegetable Curry', 'Pasta Carbonara',
-  'Turkey Sandwich', 'Mushroom Risotto', 'BBQ Ribs', 'Fish Tacos', 'Quinoa Bowl',
-  'Lamb Chops', 'Tofu Stir Fry', 'Burger Deluxe', 'Chicken Teriyaki', 'Shrimp Scampi'
-];
-
-const SIDE_NAMES = [
-  'French Fries', 'Caesar Salad', 'Garlic Bread', 'Steamed Broccoli', 'Mashed Potatoes',
-  'Coleslaw', 'Onion Rings', 'Rice Pilaf', 'Roasted Vegetables', 'Mac and Cheese'
-];
-
-const DRINK_NAMES = [
-  'Fresh Orange Juice', 'Iced Coffee', 'Green Tea', 'Sparkling Water', 'Coca Cola',
-  'Mango Smoothie', 'Hot Chocolate', 'Lemonade', 'Energy Drink', 'Herbal Tea'
-];
-
-const TASTE_PROFILES = ['sweet', 'savory', 'spicy'] as const;
-
-function getRandomElement<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)];
-}
-
-function getRandomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { MENU_ITEMS, getItemsByCategory, getRandomItems } from '../data/menuItems';
 
 export function generateDailyMenu(): { mains: MenuItem[], sides: MenuItem[], drinks: MenuItem[] } {
-  const mains: MenuItem[] = [];
-  const sides: MenuItem[] = [];
-  const drinks: MenuItem[] = [];
+  const allMains = getItemsByCategory('main');
+  const allSides = getItemsByCategory('side');
+  const allDrinks = getItemsByCategory('drink');
 
-  // Generate 5 main courses
-  for (let i = 0; i < 5; i++) {
+  // Select 5 mains, 4 sides, and 4 drinks randomly from the available items
+  const mains = getRandomItems(allMains, Math.min(5, allMains.length));
+  const sides = getRandomItems(allSides, Math.min(4, allSides.length));
+  const drinks = getRandomItems(allDrinks, Math.min(4, allDrinks.length));
+
+  // If we don't have enough items, repeat some with slight variations
+  while (mains.length < 5 && allMains.length > 0) {
+    const randomMain = allMains[Math.floor(Math.random() * allMains.length)];
     mains.push({
-      name: `${getRandomElement(MAIN_NAMES)}_${getRandomInt(1, 999)}`,
-      category: 'main',
-      calories: getRandomInt(200, 400),
-      taste: getRandomElement(TASTE_PROFILES),
-      popularity: getRandomInt(1, 100)
+      ...randomMain,
+      name: `${randomMain.name} (Special)`,
+      calories: randomMain.calories + Math.floor(Math.random() * 50) - 25, // ±25 calorie variation
+      popularity: Math.min(100, randomMain.popularity + Math.floor(Math.random() * 10) - 5) // ±5 popularity variation
     });
   }
 
-  // Generate 4 side dishes
-  for (let i = 0; i < 4; i++) {
+  while (sides.length < 4 && allSides.length > 0) {
+    const randomSide = allSides[Math.floor(Math.random() * allSides.length)];
     sides.push({
-      name: `${getRandomElement(SIDE_NAMES)}_${getRandomInt(1, 999)}`,
-      category: 'side',
-      calories: getRandomInt(100, 300),
-      taste: getRandomElement(TASTE_PROFILES),
-      popularity: getRandomInt(1, 100)
+      ...randomSide,
+      name: `${randomSide.name} (Special)`,
+      calories: randomSide.calories + Math.floor(Math.random() * 30) - 15, // ±15 calorie variation
+      popularity: Math.min(100, randomSide.popularity + Math.floor(Math.random() * 10) - 5)
     });
   }
 
-  // Generate 4 drinks
-  for (let i = 0; i < 4; i++) {
+  while (drinks.length < 4 && allDrinks.length > 0) {
+    const randomDrink = allDrinks[Math.floor(Math.random() * allDrinks.length)];
     drinks.push({
-      name: `${getRandomElement(DRINK_NAMES)}_${getRandomInt(1, 999)}`,
-      category: 'drink',
-      calories: getRandomInt(50, 200),
-      taste: getRandomElement(TASTE_PROFILES),
-      popularity: getRandomInt(1, 100)
+      ...randomDrink,
+      name: `${randomDrink.name} (Special)`,
+      calories: randomDrink.calories + Math.floor(Math.random() * 20) - 10, // ±10 calorie variation
+      popularity: Math.min(100, randomDrink.popularity + Math.floor(Math.random() * 10) - 5)
     });
   }
 
